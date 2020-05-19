@@ -27,7 +27,9 @@ const FloatingCart: React.FC = () => {
     let totalCount = 0;
     // eslint-disable-next-line array-callback-return
     products.map(product => {
-      totalCount += product.price;
+      const countQuantity = product.quantity;
+
+      totalCount += product.price * countQuantity;
     });
     return formatValue(totalCount);
   }, [products]);
@@ -35,8 +37,10 @@ const FloatingCart: React.FC = () => {
   const totalItensInCart = useMemo(() => {
     let Count = 0;
     // eslint-disable-next-line array-callback-return
-    products.map(() => {
-      Count += 1;
+    products.map(product => {
+      const countQuantity = product.quantity;
+
+      Count += countQuantity;
     });
 
     return Count;

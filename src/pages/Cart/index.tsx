@@ -60,19 +60,24 @@ const Cart: React.FC = () => {
     let totalCount = 0;
     // eslint-disable-next-line array-callback-return
     products.map(product => {
-      totalCount += product.price;
+      const countQuantity = product.quantity;
+
+      totalCount += product.price * countQuantity;
     });
     return formatValue(totalCount);
   }, [products]);
 
   const totalItensInCart = useMemo(() => {
     let Count = 0;
-    // eslint-disable-next-line no-return-assign
-    products.map(() => (Count += 1));
+    // eslint-disable-next-line array-callback-return
+    products.map(product => {
+      const countQuantity = product.quantity;
+
+      Count += countQuantity;
+    });
 
     return Count;
   }, [products]);
-
   return (
     <Container>
       <ProductContainer>

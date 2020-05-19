@@ -42,18 +42,30 @@ const CartProvider: React.FC = ({ children }) => {
     loadProducts();
   }, []);
 
-  const addToCart = useCallback(
-    async product => {
-      await AsyncStorage.setItem(
-        '@GoMarketplace:product',
-        JSON.stringify(product),
-      );
+  // se o product já existe ele vai somar no quantity
+  // tenho um state e no asyncStorage
 
-      setProducts([...products, product]);
+  const addToCart = useCallback(
+    async (product: Product) => {
+      const productExists = products.find(item => item.id === product.id);
+
+      const newProducts = productExists
+        ? products.map(item =>
+            item.id === product.id
+              ? { ...item, quantity: item.quantity + 1 }
+              : item,
+          )
+        : [...products, { ...product, quantity: 1 }];
+
+      setProducts(newProducts);
+
+      await AsyncStorage.setItem(
+        '@GoMarketplace:produtcs',
+        JSON.stringify(newProducts),
+      );
     },
     [products],
   );
-
   const increment = useCallback(async id => {
     await AsyncStorage.setItem('@GoMarketplace:id', id);
   }, []);
